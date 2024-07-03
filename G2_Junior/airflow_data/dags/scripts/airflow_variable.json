@@ -1,0 +1,44 @@
+{
+    "var_airflow_etl": {
+        "tables": {
+            "products": {
+                "product_id": "int",
+                "ssn": "varchar",
+                "name": "varchar",
+                "price": "int",
+                "currency": "varchar",
+                "created_at": "timestemp",
+                "igested_at": "timestemp",
+                "city-name": "varchar",
+                "id_source": "int"
+            },
+            "orders": {
+                "order_id": "int", 
+                "customer_id": "int", 
+                "product_id": "int", 
+                "order_status": "varchar", 
+                "order_dttm": "timestemp", 
+                "quantity": "float", 
+                "created_at": "timestemp",
+                "igested_at": "timestemp",
+                "city-name": "varchar",
+                "id_source": "int"
+            },
+            "customers": {
+                "customer_id": "int", 
+                "full_name": "varchar", 
+                "home_address": "varchar", 
+                "phone_number": "varchar", 
+                "passport": "varchar", 
+                "birth_date": "date", 
+                "email": "varchar", 
+                "credit_card": "int", 
+                "credit_card_expire": "varchar", 
+                "created_at": "timestemp",
+                "igested_at": "timestemp",
+                "city-name": "varchar",
+                "id_source": "int"
+            }
+        }
+    }
+}
