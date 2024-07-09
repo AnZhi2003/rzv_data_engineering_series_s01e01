@@ -7,22 +7,22 @@
                 "name": "varchar",
                 "price": "int",
                 "currency": "varchar",
-                "created_at": "timestemp",
-                "igested_at": "timestemp",
-                "city-name": "varchar",
-                "id_source": "int"
+                "created_at": "timestamp",
+                "igested_at": "timestamp",
+                "city_name": "varchar",
+                "id_source": "varchar"
             },
             "orders": {
                 "order_id": "int", 
                 "customer_id": "int", 
                 "product_id": "int", 
                 "order_status": "varchar", 
-                "order_dttm": "timestemp", 
+                "order_dttm": "timestamp", 
                 "quantity": "float", 
-                "created_at": "timestemp",
-                "igested_at": "timestemp",
-                "city-name": "varchar",
-                "id_source": "int"
+                "created_at": "timestamp",
+                "igested_at": "timestamp",
+                "city_name": "varchar",
+                "id_source": "varchar"
             },
             "customers": {
                 "customer_id": "int", 
@@ -32,12 +32,22 @@
                 "passport": "varchar", 
                 "birth_date": "date", 
                 "email": "varchar", 
-                "credit_card": "int", 
+                "credit_card": "varchar", 
                 "credit_card_expire": "varchar", 
-                "created_at": "timestemp",
-                "igested_at": "timestemp",
-                "city-name": "varchar",
-                "id_source": "int"
+                "created_at": "timestamp",
+                "igested_at": "timestamp",
+                "city_name": "varchar",
+                "id_source": "varchar"
+            }
+        },
+        "source_conn": {
+            "shop-1": {
+                "hook": "pg-shop-1",
+                "city_name": "New-York"
+            },
+            "shop-2": {
+                "hook": "pg-shop-2",
+                "city_name": "Istanbul"
             }
         }
     }
