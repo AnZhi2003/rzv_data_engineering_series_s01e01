@@ -31,7 +31,7 @@ default_args = {"owner": "anzhi",
                 "retries": 1,
                 }
 
-@dag(default_args=default_args, catchup=False, tags=["etl"], schedule_interval='*/2 * * * *')
+@dag(default_args=default_args, catchup=False, tags=["etl"], schedule_interval='*/5 * * * *')
 def etl():
 
     @task()
@@ -62,9 +62,9 @@ def etl():
             
             for table_name in var_DWH_tables.keys():
                 # Максимальная дата в DWH:
-                max_created_at_DWH = get_max_created_at(DWH_engine, "dds", table_name) 
+                max_created_at_DWH = get_max_created_at(DWH_engine, "dds", table_name, source_name) 
                 # Dataframe после max_created_at_DWH:
-                df_source = get_table_from_DB(source_engine, "public", table_name, max_created_at_DWH) 
+                df_source = get_table_from_DB(source_engine, "public", table_name, max_created_at_DWH, source_name) 
                 
                 # Если вернется пустой df:
                 if df_source.empty:
@@ -72,12 +72,13 @@ def etl():
                     continue
                 
                 # Добавляем дополнительные столбцы:
-                df_source["igested_at"] = dag_run_datetime
+                df_source["ingested_at"] = dag_run_datetime
                 df_source["city_name"] = city_name
-                df_source["id_source"] = df_source[df_source.columns[0]].apply(lambda x: f"{source_name}_{x}")
+                df_source["source_name"] = source_name
+                df_source["source_id"] = df_source[df_source.columns[0]].apply(lambda x: f"{source_name}_{x}")
 
                 # Добавить создание файла и записать путь в виде строки в список list_of_paths
-                file_name = f"{dag_run_id}_{dag_run_date}_{table_name}.csv"
+                file_name = f"{dag_run_id}_{dag_run_date}_{source_name}_{table_name}.csv"
                 file_path = os.path.join('/tmp/airflow_staging', file_name)
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 df_source.to_csv(file_path, sep = ',', index=False, header=True, encoding='utf-8', date_format='%Y-%m-%d %H:%M:%S', float_format='%.2f')
@@ -97,12 +98,14 @@ def etl():
         for file_path in list_of_paths:
             df = pd.read_csv(file_path)
             table_name = file_path.split('/')[-1].split('_')[-1].split('.')[0]
+            source_name = file_path.split('/')[-1].split('_')[-2]
 
             try:
                 df.to_sql(table_name, DWH_engine, schema=schema_name,if_exists='append', index=False)
-                logging.info(f"Data loaded successfully into {schema_name}.{table_name}")
+                logging.info(f"""Data loaded successfully into {schema_name}.{table_name} for source={source_name}. DF length is {len(df)}""")
             except Exception as e:
                 logging.error(f"Error loading data into {schema_name}.{table_name}: {e}")
+                raise e
 
 
 

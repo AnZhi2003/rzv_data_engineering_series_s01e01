@@ -8,9 +8,10 @@
                 "price": "int",
                 "currency": "varchar",
                 "created_at": "timestamp",
-                "igested_at": "timestamp",
+                "ingested_at": "timestamp",
                 "city_name": "varchar",
-                "id_source": "varchar"
+                "source_id": "varchar",
+                "source_name": "varchar"
             },
             "orders": {
                 "order_id": "int", 
@@ -20,9 +21,10 @@
                 "order_dttm": "timestamp", 
                 "quantity": "float", 
                 "created_at": "timestamp",
-                "igested_at": "timestamp",
+                "ingested_at": "timestamp",
                 "city_name": "varchar",
-                "id_source": "varchar"
+                "source_id": "varchar",
+                "source_name": "varchar"
             },
             "customers": {
                 "customer_id": "int", 
@@ -35,9 +37,10 @@
                 "credit_card": "varchar", 
                 "credit_card_expire": "varchar", 
                 "created_at": "timestamp",
-                "igested_at": "timestamp",
+                "ingested_at": "timestamp",
                 "city_name": "varchar",
-                "id_source": "varchar"
+                "source_id": "varchar",
+                "source_name": "varchar"
             }
         },
         "source_conn": {

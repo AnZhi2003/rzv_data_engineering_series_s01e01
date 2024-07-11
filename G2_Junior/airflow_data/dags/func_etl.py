@@ -61,22 +61,24 @@ def checking_schema_tables_columns_in_DB(engine: Engine, schema_name: str, table
         
     return all_tables_created
             
-def get_max_created_at(engine: Engine, schema_name: str, table_name: str) -> datetime | None:
+def get_max_created_at(engine: Engine, schema_name: str, table_name: str, source_name: str) -> datetime | None:
     """"Получение максимальной даты по столбцу "created_at" из любой таблицы, как источника, так и таргета."""
     with engine.connect() as conn:
         try:
             result = conn.execute(text(f"""
                         SELECT MAX(created_at) AS max_created_at 
-                        FROM {schema_name}.{table_name};
-                        """))
+                        FROM {schema_name}.{table_name}
+                        WHERE source_name = :source_name;
+                        """), {"source_name": source_name})
             max_created_at = result.scalar()
+            logging.info(f"Max created_at for {schema_name}.{table_name} for source={source_name}: {max_created_at}")
         except Exception as e:
-            logging.error(f"Error fetching max created_at from {schema_name}.{table_name}: {e}.")
+            logging.error(f"Error fetching max created_at from {schema_name}.{table_name} for source={source_name}: {e}.")
             max_created_at = None
 
     return max_created_at
 
-def get_table_from_DB(engine: Engine, schema_name: str, table_name: str, max_created_at: datetime | None) -> pd.DataFrame:
+def get_table_from_DB(engine: Engine, schema_name: str, table_name: str, max_created_at: datetime | None, source_name: str) -> pd.DataFrame:
     with engine.connect() as conn:
         try:
             if max_created_at is None:
@@ -88,12 +90,12 @@ def get_table_from_DB(engine: Engine, schema_name: str, table_name: str, max_cre
                 query = text(f"""
                 SELECT * 
                 FROM {schema_name}.{table_name}
-                WHERE created_at > ':max_created_at;
+                WHERE created_at > :max_created_at;
                 """)
             df = pd.read_sql_query(query, conn, params={"max_created_at": max_created_at})
-
+            logging.info(f"Fetched {len(df)} records from {schema_name}.{table_name} for source={source_name} since {max_created_at}")
         except Exception as e:
-            logging.error(f"Error fetching data from {schema_name}.{table_name}: {e}.")
+            logging.error(f"Error fetching data from {schema_name}.{table_name} for source={source_name}: {e}.")
             df = pd.DataFrame()
         
     return df
