@@ -1,0 +1,8 @@
+"""ВОПРОСЫ по https://teletype.in/@razvodov_alexey/incremental_loading_scd2:
+1. stg_extract = max (created_at) - окно возможного обновления данных. Что это за окно? Как его определить?
+2. stg_transform и stg_load: ...и загрузить в стейджинг слой, таблица в котором предварительно очищается. 
+Зачем очищается стейджинг слой? Мы считаем, что эти данные уже загружены в финальный слой хранилища?
+3. oda_extract и oda_transform_i: откуда появились данные, которые надо обновить?
+4. oda_transform_u
+5. i, u, d - insert, update, delete?
+"""
