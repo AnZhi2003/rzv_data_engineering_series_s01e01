@@ -1,0 +1,5 @@
+apache-airflow-providers-postgres==5.11.1
+pandas==2.1.4
+pendulum==3.0.0
+sqlalchemy==1.4.47
+psycopg2-binary==2.9.6

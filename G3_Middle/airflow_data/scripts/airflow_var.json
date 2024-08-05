@@ -1,0 +1,66 @@
+{
+    "var_airflow_etl": {
+        "tables_list": [
+            "products",
+            "orders",
+            "customers"
+        ],
+        "tables_columns": {
+            "products": {
+                "product_id": "int",
+                "ssn": "varchar",
+                "name": "varchar",
+                "price": "int",
+                "currency": "varchar",
+                "created_at": "timestamp"
+            },
+            "orders": {
+                "order_id": "int", 
+                "customer_id": "int", 
+                "product_id": "int", 
+                "order_status": "varchar", 
+                "order_dttm": "timestamp", 
+                "quantity": "float", 
+                "created_at": "timestamp"
+            },
+            "customers": {
+                "customer_id": "int", 
+                "full_name": "varchar", 
+                "home_address": "varchar", 
+                "phone_number": "varchar", 
+                "passport": "varchar", 
+                "birth_date": "date", 
+                "email": "varchar", 
+                "credit_card": "varchar", 
+                "credit_card_expire": "varchar", 
+                "created_at": "timestamp"
+            }
+        },
+        "tech_columns": {
+            "ingested_at": "timestamp",
+            "source_id": "varchar",
+            "source_name": "varchar",
+            "city_name": "varchar"
+            
+        },
+        "temporary_columns": {
+            "do_with_record": "varchar"
+        },
+        "scd2_columns": {
+            "eff_from_dttm": "timestamp",
+            "eff_to_dttm": "timestamp"
+        },
+        "source_conn": {
+            "shop-1": {
+                "conn_id": "pg-shop-1",
+                "city_name": "New-York",
+                "update_months_ago": 3
+            },
+            "shop-2": {
+                "conn_id": "pg-shop-2",
+                "city_name": "Istanbul",
+                "update_months_ago": 3
+            }
+        }
+    }
+}
